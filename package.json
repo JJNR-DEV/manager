@@ -1,0 +1,15 @@
+{
+  "name": "tasks_app",
+  "version": "1.0.0",
+  "description": "My-App tasks managment",
+  "main": "index.js",
+  "scripts": {
+    "build": "(cd client && npm install && npm run-script build) && (cd server && npm install)",
+    "start": "cd server && npm start"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "author": "Jose Rodrigues (JJNR)",
+  "license": "ISC"
+}

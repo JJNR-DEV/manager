@@ -1,0 +1,69 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#root, .App {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+input, button, select {
+  &:focus {
+    outline: none;
+  }
+}
+
+/* Variables */
+$containerRadius: 10px;
+$btnRadius: 10px;
+$commonWeight: 700;
+
+/* Links in header and footer button */
+$mainLinksSpacing: 1px;
+$mainLinksWeight: 900;
+
+/* Elements Max Width */
+$elMaxWidth: 275px;
+
+$inputMargin: 10px 0;
+$inputPadding: 10px 5px;
+
+$createEditBtn: #1f7b83;
+$createEditBtnHover: #146066;
+
+$deleteBtn: #b13046;
+$deleteBtnHover: #891e30;
+
+$faded: #a4a4a4;
+$fadedFont: #858585;
+
+
+/* Main */
+.mainContainer {
+  text-align: center;
+  padding-bottom: 90px;
+  border-top: 1px solid #eee;
+
+  .emptyList {
+    margin-top: 40px;
+    display: block
+  }
+}
+
+@import './Navigation.scss';
+@import './NewTask.scss';
+@import './Subtask.scss';
+@import './Task.scss';

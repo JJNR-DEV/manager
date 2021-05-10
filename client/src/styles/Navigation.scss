@@ -1,0 +1,37 @@
+.navigationParent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  max-width: 400px;
+  margin: 0 auto;
+
+  a {
+    font-size: 1.2em;
+    font-weight: $mainLinksWeight;
+    letter-spacing: $mainLinksSpacing;
+  }
+
+  div {
+    width: 150px;
+  }
+
+  .navigationElement {
+    text-align: center;
+    padding: 5px;
+    margin: 5px 0;
+
+    a {
+      color: $fadedFont;
+
+      &:hover {
+        color: #464646;
+      }
+    }
+  }
+
+  .navigationCurrent {
+    text-align: center;
+    border-top: 3px solid red;
+    padding: 10px 5px;
+  }
+}

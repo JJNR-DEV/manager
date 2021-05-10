@@ -1,0 +1,127 @@
+.taskList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-evenly;
+
+  .task {
+    border-radius: $containerRadius;
+    padding: 15px;
+    margin: 10px;
+    box-shadow: 0.5px 0.5px 2px 2px #dfdfdf;
+    max-width: 300px;
+    text-align: left;
+    position: relative;
+    min-width: 275px;
+
+    .categoryName {
+      border-bottom: 1px solid $faded !important;
+      padding-bottom: 5px;
+
+      span {
+        font-weight: $commonWeight;
+      }
+    }
+
+    .nameStatus {
+      display: flex;
+      padding: 10px 0;
+      max-width: 220px;
+
+      h2 {
+        margin: 0;
+      }
+
+      label {
+        padding: 5px;
+
+        input {
+          display: none;
+        }
+
+        .customCheckbox {
+          width: 22px;
+          height: 22px;
+          border: 1px solid;
+          border-radius: 15px;
+          position: absolute;
+          right: 15px;
+          cursor: pointer;
+          color: #fff;
+        }
+
+        input:checked ~ .customCheckbox::after {
+          content: '\2713';
+          font-size: 1rem;
+          font-weight: 800;
+          display: flex;
+          justify-content: center;
+          padding: 1px 0;
+        }
+      }
+    }
+
+    .taskPrice {
+      display: block;
+      color: $fadedFont;
+      font-size: 0.9em;
+    }
+
+    h3 {
+      color: $fadedFont;
+      text-transform: capitalize;
+      text-align: center;
+    }
+
+    /* Category */
+    .taskType {
+      border-top: 1px solid $faded;
+      padding: 5px 0 10px;
+
+      .specialInputContainer {
+        padding-top: 5px;
+        font-weight: $commonWeight;
+      }
+    }
+
+    /* Buttons Section */
+    .btnContainer {
+      display: flex;
+      flex-direction: row;
+      padding: 20px 0 0;
+
+      a {
+        width: 100%;
+      }
+
+      button {
+        border: 0px;
+        font-size: 1rem;
+        width: 100%;
+        padding: 10px;
+        color: #fff;
+        border-radius: $btnRadius;
+        font-weight: $commonWeight;
+        cursor: pointer;
+      }
+
+      .editBtn {
+        margin-right: 10px;
+        background-color: $createEditBtn;
+
+        &:hover {
+          background-color: $createEditBtnHover;
+        }
+      }
+
+      .taskErasure {
+        margin-left: 10px;
+        background-color: $deleteBtn;
+
+        &:hover {
+          background-color: $deleteBtnHover;
+        }
+      }
+    }
+  }
+}

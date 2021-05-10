@@ -1,0 +1,139 @@
+@mixin createEditBtns () {
+  background-color: $createEditBtn;
+  border-radius: $btnRadius;
+  color: #fff;
+  border: 1px solid #fff;
+  font-size: 1rem;
+  padding: 10px;
+  width: 100%;
+  font-weight: $mainLinksWeight;
+  letter-spacing: $mainLinksSpacing;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif !important;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $createEditBtnHover;
+  }
+}
+
+/* Footer Button */
+.newTaskBtn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: #fafafa;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0.5px 0.5px 3px 3px #dfdfdf;
+
+  .linkBtn {
+    max-width: $elMaxWidth;
+    @include createEditBtns;
+  }
+
+  .linkBtn[disabled] {
+    background-color: grey;
+
+    &:hover {
+      cursor: auto;
+    }
+  }
+}
+
+.required-subtask {
+  flex-direction: row;
+  align-items: center;
+
+  input {
+    margin: 10px 20px;
+  }
+}
+
+.create-add-edit {
+  position: relative;
+  max-width: 768px;
+  margin: auto;
+}
+
+@media (max-width: 778px) {
+  .create-add-edit {
+    margin: 10px;
+  }
+}
+
+@mixin inputs () {
+  padding: $inputPadding;
+  margin: $inputMargin;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px solid #000;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Styling for all Forms */
+.forms {
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px;
+
+  h1 {
+    text-align: center;
+    padding: 10px;
+  }
+
+  label {
+    margin: $inputMargin;
+    display: flex;
+    flex-direction: column;
+    font-weight: $commonWeight;
+  }
+
+  select {
+    @include inputs;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  fieldset {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    border: 0;
+  }
+
+  input {
+    @include inputs;
+  }
+
+  input[type="date"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: $inputPadding;
+  }
+
+  .btn {
+    border: 1px;
+    margin: 30px 0;
+    padding: $inputPadding;
+    width: 100%;
+
+    @include createEditBtns;
+  }
+
+  .exit {
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+  }
+}

@@ -4,7 +4,7 @@ export interface Task {
   description: string
   taskType: string
   specialInput: {
-    fooCarbs?: number
+    foodCarbs?: number
     foodFat?: number
     foodProtein?: number
     workDeadline?: string | number | Date

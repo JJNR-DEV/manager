@@ -14,7 +14,6 @@ interface Props {
 }
 
 const NewTask: React.FC<Props> = (props) => {
-
   const [ toDo, setToDo ] = useState<Task>({
     name: '',
     description: '',
@@ -30,7 +29,7 @@ const NewTask: React.FC<Props> = (props) => {
 
   const deliver = (task: Task) => {
     props.firebase.userTasks.add(task)
-      .catch((err: Error) => console.error(`Hmm task was not created: ${ err }`));
+      .catch((err: Error) => swal('Hmm task was not created', `${ err }`, 'error'));
 
     swal('Success!', `Task "${ task.name }" has been created`, 'success')
       .then(() => history.push('/'));
@@ -42,18 +41,18 @@ const NewTask: React.FC<Props> = (props) => {
 
       <Link to='/'>
         <span className='exit'>
-          {"\u2716"}
+          { '\u2716' }
         </span>
       </Link>
 
       <h1>Create a new Task</h1>
       <label>
-        Name
+        Task Name
         <input type='text' name='toDoName' onChange={ (input) => handleChange(input, setToDo, toDo) } />
       </label>
 
       <label>
-        Type
+        Category Type
         <select name='toDoType' defaultValue='Other' onChange={ (input) => handleChange(input, setToDo, toDo) }>
           <option value='Other'>Other</option>
           <option value='Food'>Food</option>
@@ -100,12 +99,6 @@ const NewTask: React.FC<Props> = (props) => {
         )
       }
 
-
-      <label>
-        Description (optional)
-        <input type='text' name='toDoDesc' onChange={ (input) => handleChange(input, setToDo, toDo) } />
-      </label>
-
       {
         toDo.taskType === 'Work' && (
           <fieldset>
@@ -122,6 +115,31 @@ const NewTask: React.FC<Props> = (props) => {
           </fieldset>
         )
       }
+
+      {
+      /*
+        // this needs some adjustment because as soon as it changes it will no longer be visible
+        toDo.taskType === 'Other' && (
+          <fieldset>
+            <label>
+              Category Name (optional)
+              <input
+                type='text'
+                className='otherName'
+                name='otherName'
+                placeholder='Type the name of this category'
+                onChange={ (input) => handleChange(input, setToDo, toDo) }
+              />
+            </label>
+          </fieldset>
+        )
+      */
+      }
+
+      <label>
+        Description (optional)
+        <input type='text' name='toDoDesc' onChange={ (input) => handleChange(input, setToDo, toDo) } />
+      </label>
 
       <label>
         Price (optional)

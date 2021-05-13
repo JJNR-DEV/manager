@@ -30,11 +30,10 @@ const NewSubtask: React.FC<Props> = (props) => {
     if (!emptyFields(subtask.name.toString())) return;
 
     props.firebase.userTasks.doc(props.parentId).collection('taskSubtasks').add(subtask)
-      .then(() => {
-        swal('Success!', `Subtask "${ subtask.name }" has been added to "${ props.parentName }"`, 'success')
-          .then(() => history.goBack());
-      })
       .catch((err: Error) => console.error(`Hmm subtask was not created: ${ err }`));
+
+    swal('Success!', `Subtask "${ subtask.name }" has been added to "${ props.parentName }"`, 'success')
+      .then(() => history.goBack());
   };
 
   return (
@@ -50,8 +49,11 @@ const NewSubtask: React.FC<Props> = (props) => {
       <span style={{ textAlign: 'center' }}>This will be added to the "{ props.parentName }" task</span>
       <br />
       <label>
-        Name
-        <input type='text' name='toDoName' onChange={ (input) => handleChange(input, setSubtask, subtask) } />
+        Subtask Name
+        <input
+          type='text'
+          name='toDoName'
+          onChange={ (input) => handleChange(input, setSubtask, subtask) } />
       </label>
 
       <label>

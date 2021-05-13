@@ -10,7 +10,7 @@ import { Task, Subtask } from '../../interfaces';
 import { Firebase } from '../../firebase';
 
 interface Props {
-  task: Task,
+  task: Task
   firebase: Firebase
 };
 
@@ -23,22 +23,21 @@ const TaskItem: React.FC<Props> = (props) => {
       color = '#f99457';
       break;
     case 'Work':
-      color = '#DEA139';
+      color = '#a05ce8';
       break;
     default:
       color = '#3AA652';
   };
 
   useEffect(() => {
-    // Possibility for a collection of subtasks
+    // Get collection of subtasks
     const unsubscribe = props.firebase.userTasks.doc(props.task.id).collection('taskSubtasks').onSnapshot((doc: any) => {
       let allSubtasks: Subtask[] = [];
       doc.docs.forEach((d: any) => allSubtasks = [...allSubtasks, { ...d.data(), subtaskId: d.id }]);
       setSubtasks(allSubtasks);
     });
-
     return () => unsubscribe();
-  }, [props.firebase.userTasks, props.task.id, props.task.taskId]);
+  }, [ props.firebase.userTasks, props.task.id, props.task.taskId ]);
 
 
   const updateTask = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,8 +52,7 @@ const TaskItem: React.FC<Props> = (props) => {
       : swal('Success', `Your task "${ props.task.name }" is now on your To Do list`, 'success')
   };
 
-  const handleDeleteSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    swal({
+  const handleDeleteSubmit = () => swal({
       title: `Are you sure you want to erase "${ props.task.name }"?`,
       text: 'Once deleted, there\'s no turning back!',
       icon: 'warning',
@@ -69,7 +67,6 @@ const TaskItem: React.FC<Props> = (props) => {
         }
       })
       .catch((err: Error) => console.error(`Something is not right: ${ err }`));
-  };
 
   const style = {
     backgroundColor: props.task.concluded ? color : '#fff',
@@ -78,25 +75,27 @@ const TaskItem: React.FC<Props> = (props) => {
 
   return (
     <div className='task'>
-        <div className='categoryName' style={{ color }}>
-          <span>{ props.task.taskType }</span>
-        </div>
-
-        <div className='nameStatus'>
-          <h2>{ props.task.name }</h2>
-          <label>
-            <input
-              type="checkbox"
-              onChange={ updateTask }
-              // onClick={blockPropagation}
-              checked={ props.task.concluded }
-              />
-            <span className='customCheckbox' style={ style }></span>
-
-          </label>
+      <div className='categoryName' style={{ color }}>
+        <span>{ props.task.taskType }</span>
       </div>
 
-      { props.task.price !== null && <span className='taskPrice'>Price: { props.task.price }kr</span> }
+      <div className='nameStatus'>
+        <h2>{ props.task.name }</h2>
+        <label>
+          <input
+            type="checkbox"
+            onChange={ updateTask }
+            // onClick={blockPropagation}
+            checked={ props.task.concluded }
+            />
+          <span className='customCheckbox' style={ style }></span>
+
+        </label>
+      </div>
+
+      {
+        props.task.price !== null && <span className='taskPrice'>Price: { props.task.price }kr</span>
+      }
 
       {
         props.task.description !== '' &&
@@ -133,7 +132,9 @@ const TaskItem: React.FC<Props> = (props) => {
           name="task-erasure"
           className='taskErasure'
           onClick={ handleDeleteSubmit }
-          type="submit">Delete</button>
+          type="submit">
+            Delete
+        </button>
       </div>
     </div>
   );

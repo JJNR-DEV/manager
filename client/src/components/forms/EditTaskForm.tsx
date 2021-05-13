@@ -79,6 +79,7 @@ const EditTask: React.FC<Props> = (props) => {
                 className='foodCarbs'
                 name='foodCarbs'
                 placeholder='Grams'
+                defaultValue={ toDo.specialInput!.foodCarbs }
                 onChange={ (input) => handleChange(input, setToDo, toDo) }
               />
             </label>
@@ -90,6 +91,7 @@ const EditTask: React.FC<Props> = (props) => {
                 className='foodFat'
                 name='foodFat'
                 placeholder='Grams'
+                defaultValue={ toDo.specialInput!.foodFat }
                 onChange={ (input) => handleChange(input, setToDo, toDo) }
               />
             </label>
@@ -101,6 +103,7 @@ const EditTask: React.FC<Props> = (props) => {
                 className='foodProtein'
                 name='foodProtein'
                 placeholder='Grams'
+                defaultValue={ toDo.specialInput!.foodProtein }
                 onChange={ (input) => handleChange(input, setToDo, toDo) }
               />
             </label>
@@ -118,6 +121,7 @@ const EditTask: React.FC<Props> = (props) => {
                 className='workDeadline'
                 name='workDeadline'
                 placeholder='yyyy-mm-dd'
+                defaultValue={ `${ toDo.specialInput!.workDeadline }` }
                 onChange={ (input) => handleChange(input, setToDo, toDo) }
               />
             </label>

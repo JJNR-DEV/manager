@@ -1,6 +1,6 @@
 interface Props {
   inputs: {
-    fooCarbs?: number
+    foodCarbs?: number
     foodFat?: number
     foodProtein?: number
     workDeadline?: string | number | Date
@@ -13,43 +13,43 @@ const TaskSpecialInput: React.FC<Props> = ({ inputs }) => {
   const renderInputs = () => {
     for (let element in inputs) {
       switch (element) {
-        case "workDeadline":
+        case 'workDeadline':
           toRender =
             toRender +
             `
               <div style="padding: 5px 0">
                 <span>Dead Line: </span>
-                ${inputs[element]}
+                ${ inputs[element] }
               </div>
             `;
           break;
-        case "fooCarbs":
+        case 'foodCarbs':
           toRender =
             toRender +
             `
               <div style="padding: 5px 0">
                 <span>Carbohydrates: </span>
-                ${inputs[element]}
+                ${ inputs[element] }
               </div>
             `;
           break;
-        case "foodFat":
+        case 'foodFat':
           toRender =
             toRender +
             `
               <div style="padding: 5px 0">
                 <span>Fat: </span>
-                ${inputs[element]}
+                ${ inputs[element] }
               </div>
             `;
           break;
-        case "foodProtein":
+        case 'foodProtein':
           toRender =
             toRender +
             `
               <div style="padding: 5px 0">
                 <span>Protein: </span>
-                ${inputs[element]}
+                ${ inputs[element] }
               </div>
             `;
           break;

@@ -17,13 +17,13 @@ export const emptyFields = (name: string) => {
 }
 
 export const foodTypeValidation = (inputs: {
-  fooCarbs?: number,
+  foodCarbs?: number,
   foodFat?: number,
   foodProtein?: number
 }) => {
   const allInputs = Object.keys(inputs);
 
-  if(!allInputs.includes('fooCarbs')){
+  if(!allInputs.includes('foodCarbs')){
     swal('Could not submit!', 'Please provide in grams the carbohydrates amount', 'error');
     return false;
   } else if(!allInputs.includes('foodFat')){

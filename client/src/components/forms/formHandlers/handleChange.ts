@@ -12,13 +12,16 @@ export const handleChange = (userInput: any, setToDo: any, toDo: any) => {
       const clearSpecialInput = { ...toDo, specialInput: {} };
       setToDo({ ...clearSpecialInput, taskType: inputInfo.value });
       break;
+    case 'otherName':
+      setToDo({ ...toDo, taskType: inputInfo.value });
+      break;
     case 'toDoPrice':
       setToDo({ ...toDo, price: +inputInfo.value });
       break;
     case 'foodCarbs':
       setToDo({
         ...toDo,
-        specialInput: { ...toDo.specialInput, fooCarbs: +inputInfo.value },
+        specialInput: { ...toDo.specialInput, foodCarbs: +inputInfo.value },
       });
       break;
     case 'foodFat':

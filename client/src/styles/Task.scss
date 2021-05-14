@@ -14,12 +14,51 @@
     position: relative;
     min-width: 275px;
 
+    .optionsContainer {
+      position: absolute;
+      right: 15px;
+      box-shadow: 0.5px 0.5px 2px 2px #dfdfdf;
+      padding: 5px 10px;
+      top: 35px;
+      background-color: #fff;
+      z-index: 5;
+      font-size: 0.8em;
+
+      &:hover {
+        background-color: #dfdfdf;
+        cursor: pointer;
+      }
+
+      span {
+        display: flex;
+        align-items: flex-start;
+
+        svg {
+          margin-left: 10px;
+        }
+      }
+
+    }
+
     .categoryName {
       border-bottom: 1px solid $faded !important;
       padding-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: $commonWeight;
+      max-height: 25px;
 
-      span {
-        font-weight: $commonWeight;
+      .options {
+        font-weight: 900;
+        max-width: 5px;
+
+        &::after {
+          content: '\2807';
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
 

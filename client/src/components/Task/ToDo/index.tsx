@@ -11,7 +11,7 @@ interface Props {
 
 const ToDo: React.FC<Props> = ({ allTasks, disable }) => {
   const tasksTodo = allTasks.filter(task => task.concluded === false);
-
+  
   return (
     <>
       <Navigation />

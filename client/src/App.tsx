@@ -6,6 +6,7 @@ import swal from 'sweetalert';
 import './styles/globals.scss';
 import NewTask from './components/forms/NewTask';
 import EditTask from './components/Task/EditTask';
+import TaskPage from './components/Task/TaskPage';
 import NewSubtask from './components/Subtask/NewSubtask';
 import { Firebase } from './firebase';
 import { withFirebase } from './firebase/withFirebase';
@@ -22,6 +23,8 @@ interface Props {
 const App: React.FC<Props> = ({ firebase }) => {
   const [ userTasks, setUserTasks ] = useState<Task[]>([]);
   const [ disableBtn, setDisableBtn ] = useState<boolean>(true);
+
+  console.log('o')
 
   useEffect(() => {
     // Still testing
@@ -70,19 +73,22 @@ const App: React.FC<Props> = ({ firebase }) => {
 
   return (
     <Router>
-      <div className="App">
+      <div className='App'>
         <Switch>
-          <Route exact path="/">
+          <Route exact path='/'>
             <ToDo allTasks={ userTasks } disable={ disableBtn } />
           </Route>
-          <Route exact path="/done">
+          <Route exact path='/done'>
             <Done allTasks={ userTasks } disable={ disableBtn } />
           </Route>
-          <Route exact path="/new-task">
+          <Route exact path='/new-task'>
             <NewTask />
           </Route>
-          <Route exact path="/new-subtask" render={ (props: any) => <NewSubtask {...props} /> } />
-          <Route exact path="/edit-task" render={ (props: any) => <EditTask {...props} /> } />
+          <Route exact path='/task'>
+            <TaskPage />
+          </Route>
+          <Route exact path='/new-subtask' render={ (props: any) => <NewSubtask {...props} /> } />
+          <Route exact path='/edit-task' render={ (props: any) => <EditTask {...props} /> } />
         </Switch>
       </div>
     </Router>

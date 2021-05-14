@@ -16,6 +16,7 @@ interface Props {
 
 const TaskItem: React.FC<Props> = (props) => {
   const [ subtasks, setSubtasks ] = useState<Subtask[]>([]);
+  const [ toggle, setToggle ] = useState<boolean>(true);
 
   let color: string;
   switch(props.task.taskType){
@@ -73,10 +74,40 @@ const TaskItem: React.FC<Props> = (props) => {
     borderColor: props.task.concluded ? '#fff' : '#000'
   };
 
+  const shareLink = () => {
+    console.log(props)
+    // Edge cases
+    if(!navigator.onLine) return swal('Cannot copy', 'You seem to be offline', 'error');
+    if(navigator.clipboard === undefined) return swal('Cannot copy', 'To be able to copy please go to the https version of the website', 'error');
+    if (typeof window !== 'undefined') {
+      const path = `${ window.location.protocol }//${ window.location.host }/task?id=${ props.task.id }&user=${ props.firebase.user }`;
+      navigator.clipboard.writeText(path)
+        .then(() => swal('Copied!', 'You copied the link successfully', 'success'))
+        .catch(() => swal('Opps', 'Could not copy the link', 'error'))
+    } else {
+      swal('Could not copy the link', 'Please make sure your browser is up to date', 'error');
+    }
+  };
+
+  const exit = () => {
+    if(!toggle) setToggle(true);
+  };
+
   return (
-    <div className='task'>
+    <div className='task' onMouseLeave={ exit }>
+      <div className='optionsContainer' hidden={ toggle }>
+        <span onClick={ shareLink }>
+          Share Link
+          <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" d="M4 1.5H3a2 2 0 00-2 2V14a2 2 0 002 2h10a2 2 0 002-2V3.5a2 2 0 00-2-2h-1v1h1a1 1 0 011 1V14a1 1 0 01-1 1H3a1 1 0 01-1-1V3.5a1 1 0 011-1h1v-1z" clipRule="evenodd"></path>
+            <path fillRule="evenodd" d="M9.5 1h-3a.5.5 0 00-.5.5v1a.5.5 0 00.5.5h3a.5.5 0 00.5-.5v-1a.5.5 0 00-.5-.5zm-3-1A1.5 1.5 0 005 1.5v1A1.5 1.5 0 006.5 4h3A1.5 1.5 0 0011 2.5v-1A1.5 1.5 0 009.5 0h-3z" clipRule="evenodd"></path>
+          </svg>
+        </span>
+      </div>
+
       <div className='categoryName' style={{ color }}>
         <span>{ props.task.taskType }</span>
+        <span className='options' onClick={ () => setToggle(!toggle) }></span>
       </div>
 
       <div className='nameStatus'>

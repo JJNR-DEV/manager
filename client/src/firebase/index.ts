@@ -9,12 +9,9 @@ import { firebaseConfig } from './config';
 class Firebase {
   db;
   taskManager;
-  fieldVal;
 
   signIn: Function;
-
   user: string | undefined = undefined;
-  userTasks: any | undefined;
 
   constructor() {
     if (!FirebaseApp.apps.length) {
@@ -28,22 +25,26 @@ class Firebase {
     this.db = FirebaseApp.firestore();
     this.taskManager = this.db.collection('taskManager');
 
-    // methods
-    this.fieldVal = FirebaseApp.firestore.FieldValue;
-
     // Sign In user
     // If there is already an anonymous user signed in, that user will be returned
     this.signIn = async () => await FirebaseApp.auth().signInAnonymously()
       .then((d) => {
         // this.user = '1112'; // Test user
         this.user = d.user!.uid;
-        this.userTasks = this.taskManager.doc(this.user).collection('userTasks');
       })
       .catch((err) => swal('Could not sign in user', err.message, 'error'));
   }
 
+  // Collection 'userTasks' in method for sign in user or for access from external user
+  userTasks(user: string | null) {
+    return user === null
+      ? this.taskManager.doc(this.user).collection('userTasks')
+      : this.taskManager.doc(user).collection('userTasks');
+  }
+
+  // External user on Task Page
   outsideTask(userId: string, taskId: string)  {
-    return this.taskManager.doc(userId).collection('userTasks').doc(taskId!);
+    return this.userTasks(userId).doc(taskId!);
   }
 }
 

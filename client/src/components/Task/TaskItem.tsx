@@ -17,6 +17,7 @@ interface Props {
 
 const TaskItem: React.FC<Props> = (props) => {
   const [ subtasks, setSubtasks ] = useState<Subtask[]>([]);
+  // Visibility for "Share Link" container
   const [ toggle, setToggle ] = useState<boolean>(true);
 
   let color: string;
@@ -31,20 +32,17 @@ const TaskItem: React.FC<Props> = (props) => {
       color = '#3AA652';
   };
 
-  console.log('Task Item');
-
   useEffect(() => {
     // Get collection of subtasks
-    console.log('Use Effect')
     if(props.user === null) {
-      const unsubscribe = props.firebase.userTasks.doc(props.task.id).collection('taskSubtasks').onSnapshot((doc: any) => {
+      const unsubscribe = props.firebase.userTasks(null).doc(props.task.id).collection('taskSubtasks').onSnapshot((doc: any) => {
         let allSubtasks: Subtask[] = [];
         doc.docs.forEach((d: any) => allSubtasks = [...allSubtasks, { ...d.data(), subtaskId: d.id }]);
         setSubtasks(allSubtasks);
       });
       return () => unsubscribe();
     } else {
-      const unsubscribe = props.firebase.taskManager.doc(props.user).collection('userTasks').doc(props.task.id).collection('taskSubtasks').onSnapshot((doc: any) => {
+      const unsubscribe = props.firebase.userTasks(props.user).doc(props.task.id).collection('taskSubtasks').onSnapshot((doc: any) => {
         let allSubtasks: Subtask[] = [];
         doc.docs.forEach((d: any) => allSubtasks = [...allSubtasks, { ...d.data(), subtaskId: d.id }]);
         setSubtasks(allSubtasks);
@@ -57,12 +55,13 @@ const TaskItem: React.FC<Props> = (props) => {
   const updateTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
 
-    props.firebase.userTasks.doc(props.task.id).update({ concluded: checked })
+    // Method makes use of userOrigin from task to cover external user case
+    props.firebase.userTasks(props.task.userOrigin).doc(props.task.id).update({ concluded: checked })
       .catch((err: Error) => console.error(`It failed updating the check: ${ err }`));
 
     checked
-      ? swal('Yay', `You have done your "${ props.task.name }" task!`, 'success')
-      : swal('Success', `Your task "${ props.task.name }" is now on your To Do list`, 'success')
+      ? swal('Yay', `Task "${ props.task.name }" has been concluded!`, 'success')
+      : swal('Success', `Task "${ props.task.name }" is now in the To Do list`, 'success')
   };
 
   const handleDeleteSubmit = () => swal({
@@ -73,10 +72,10 @@ const TaskItem: React.FC<Props> = (props) => {
       dangerMode: true,
     }).then((del) => {
         if(del) {
-          props.firebase.userTasks.doc(props.task.id).delete();
-          swal('Success!', 'Your task has been erased', 'success');
+          props.firebase.userTasks(props.task.userOrigin).doc(props.task.id).delete();
+          swal('Success!', 'Task has been erased', 'success');
         } else {
-          swal('Your task is safe');
+          swal('The task is safe');
         }
       })
       .catch((err: Error) => console.error(`Something is not right: ${ err }`));
@@ -106,8 +105,11 @@ const TaskItem: React.FC<Props> = (props) => {
 
   return (
     <div className='task' onMouseLeave={ exit }>
-      <div className='optionsContainer' hidden={ toggle }>
-        <span onClick={ shareLink }>
+      <div
+        className='optionsContainer'
+        hidden={ toggle }
+        onClick={ shareLink }>
+        <span>
           Share Link
           <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
             <path fillRule="evenodd" d="M4 1.5H3a2 2 0 00-2 2V14a2 2 0 002 2h10a2 2 0 002-2V3.5a2 2 0 00-2-2h-1v1h1a1 1 0 011 1V14a1 1 0 01-1 1H3a1 1 0 01-1-1V3.5a1 1 0 011-1h1v-1z" clipRule="evenodd"></path>
@@ -135,9 +137,7 @@ const TaskItem: React.FC<Props> = (props) => {
         </label>
       </div>
 
-      {
-        props.task.price !== null && <span className='taskPrice'>Price: { props.task.price }kr</span>
-      }
+      { props.task.price !== null && <span className='taskPrice'>Price: { props.task.price }kr</span> }
 
       {
         props.task.description !== '' &&
@@ -157,6 +157,7 @@ const TaskItem: React.FC<Props> = (props) => {
         subtasks={ subtasks }
         parentId={ props.task.id! }
         parentName={ props.task.name }
+        parentUserOrigin={ props.task.userOrigin }
         color={ color } />
 
       <div className='btnContainer'>

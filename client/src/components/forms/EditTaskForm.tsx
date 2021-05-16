@@ -29,11 +29,11 @@ const EditTask: React.FC<Props> = (props) => {
   const history = useHistory();
 
   const deliver = (task: Task) => {
-    props.firebase.userTasks.doc(toDo.id).update(toDo)
+    props.firebase.userTasks(toDo.userOrigin).doc(toDo.id).update(toDo)
       .catch((err: Error) => console.error(`Hmm task was not edited: ${ err }`));
 
     swal('Success!', `Task "${ task.name }" has been edited`, 'success')
-      .then(() => history.push('/'));
+      .then(() => history.goBack());
   };
 
   return (

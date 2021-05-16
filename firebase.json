@@ -5,6 +5,28 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/done",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/new-task",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/new-subtask",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/edit-task",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/task",
+        "destination": "/index.html"
+      }
     ]
   }
 }

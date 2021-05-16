@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 
 import { handleChange } from './formHandlers/handleChange';
@@ -11,12 +11,17 @@ import { Firebase } from '../../firebase';
 
 interface Props {
   firebase: Firebase
-  parentId: string | undefined
+  parentId: string
   parentName: string
-  parentTaskId: number
+  parentUserOrigin: string
 };
 
-const NewSubtask: React.FC<Props> = (props) => {
+const NewSubtask: React.FC<Props> = ({
+  firebase,
+  parentId,
+  parentName,
+  parentUserOrigin
+}) => {
   const [ subtask, setSubtask ] = useState<Subtask>({
     name: '',
     price: null,
@@ -29,28 +34,21 @@ const NewSubtask: React.FC<Props> = (props) => {
     e.preventDefault()
     if (!emptyFields(subtask.name.toString())) return;
 
-    props.firebase.userTasks.doc(props.parentId).collection('taskSubtasks').add(subtask)
+    firebase.userTasks(parentUserOrigin).doc(parentId).collection('taskSubtasks').add(subtask)
       .catch((err: Error) => console.error(`Hmm subtask was not created: ${ err }`));
 
-    swal('Success!', `Subtask "${ subtask.name }" has been added to "${ props.parentName }"`, 'success')
+    swal('Success!', `Subtask "${ subtask.name }" has been added to "${ parentName }"`, 'success')
       .then(() => history.goBack());
   };
 
   return (
     <form className='forms' onSubmit={ deliver }>
-
-      {
-        <Link to='/'>
-        </Link>
-      }
-
-      <span className='exit' onClick={ () => history.goBack() }>
-        { '\u2716' }
-      </span>
+      <span className='exit' onClick={ () => history.goBack() }>{ '\u2716' }</span>
 
       <h1>Add a Subtask</h1>
-      <span style={{ textAlign: 'center' }}>This will be added to the "{ props.parentName }" task</span>
+      <span style={{ textAlign: 'center' }}>This will be added to the "{ parentName }" task</span>
       <br />
+
       <label>
         Subtask Name
         <input
@@ -65,13 +63,10 @@ const NewSubtask: React.FC<Props> = (props) => {
           type='number'
           name='toDoPrice'
           placeholder='Value in SEK'
-          onChange={ (input) => handleChange(input, setSubtask, subtask) }
-        />
+          onChange={ (input) => handleChange(input, setSubtask, subtask) } />
       </label>
 
-      <button className='btn' type='submit'>
-        Add Subtask
-      </button>
+      <button className='btn' type='submit'>Add Subtask</button>
     </form>
   );
 };

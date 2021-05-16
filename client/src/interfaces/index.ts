@@ -22,6 +22,7 @@ export interface Subtask {
 };
 
 export interface SubtaskParentElements {
-  parentId: string | undefined
+  parentId: string
   parentName: string
+  parentUserOrigin: string
 };

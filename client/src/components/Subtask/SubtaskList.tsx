@@ -10,6 +10,7 @@ interface Props {
   parentId: string
   parentName: string
   taskPrice: number | null
+  parentUserOrigin: string
 };
 
 const SubtaskList: React.FC<Props> = ({
@@ -17,6 +18,7 @@ const SubtaskList: React.FC<Props> = ({
   color,
   parentId,
   parentName,
+  parentUserOrigin,
   taskPrice
 }) => {
   let totalPrice: number = 0;
@@ -33,6 +35,7 @@ const SubtaskList: React.FC<Props> = ({
             key={ i }
             parentId={ parentId }
             subtask={ subtask }
+            parentUserOrigin={ parentUserOrigin }
             color={ color } />
         })
       }
@@ -46,11 +49,10 @@ const SubtaskList: React.FC<Props> = ({
         pathname: '/new-subtask',
         state: {
           parentId,
-          parentName
+          parentName,
+          parentUserOrigin
         }
-      }}>
-        {'\u002B'} Add a subtask
-      </Link>
+      }}>{'\u002B'} Add a subtask</Link>
     </div>
   );
 };

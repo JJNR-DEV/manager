@@ -27,7 +27,7 @@ const NewTask: React.FC<Props> = (props) => {
   const history = useHistory();
 
   const deliver = (task: Task) => {
-    props.firebase.userTasks.add(task)
+    props.firebase.userTasks(null).add(task)
       .catch((err: Error) => swal('Hmm task was not created', `${ err }`, 'error'));
 
     swal('Success!', `Task "${ task.name }" has been created`, 'success')

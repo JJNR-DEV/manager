@@ -24,11 +24,7 @@ const App: React.FC<Props> = ({ firebase }) => {
   const [ userTasks, setUserTasks ] = useState<Task[]>([]);
   const [ disableBtn, setDisableBtn ] = useState<boolean>(true);
 
-  console.log('App')
-  console.log(userTasks)
-
   useEffect(() => {
-    console.log('App use effect')
     // Still testing
     // Needs to be updated
     // const server = process.env.NODE_ENV === 'production' ?
@@ -40,8 +36,7 @@ const App: React.FC<Props> = ({ firebase }) => {
         .then(() => {
           setDisableBtn(false);
 
-          const unsubscribe = firebase.userTasks.onSnapshot((doc: any) => {
-            console.log(doc)
+          const unsubscribe = firebase.userTasks(null).onSnapshot((doc: any) => {
             if(doc.empty) {
               firebase.taskManager.doc(firebase.user).set({});
             } else {
@@ -53,46 +48,17 @@ const App: React.FC<Props> = ({ firebase }) => {
             }
           });
 
-          return () => {
-            console.error('Its about to unsubscribe')
-            unsubscribe()
-          };
+          return () => unsubscribe();
         })
         .catch((err: Error) => {
           console.error(err);
           swal('Failed to get data', err.message, 'warning');
         })
 
-      /*
-      firebase.taskManager.doc(firebase.user).get()
-        .then((doc: any) => {
-
-          if(doc.exists) {
-            // Unsubscribe to avoid memory leaks
-            const unsubscribe = firebase.userTasks.onSnapshot((doc: any) => {
-              let allTasks: any[] = [];
-              doc.docs.forEach((d: any) => allTasks = [...allTasks, { ...d.data(), id: d.id }]);
-              setUserTasks(allTasks);
-            });
-            return () => unsubscribe();
-          } else {
-            // Create document
-            firebase.taskManager.doc(firebase.user).set({});
-            // Create collection
-            const unsubscribe = firebase.userTasks.onSnapshot((doc: any) => {
-              let allTasks: any[] = [];
-              doc.docs.forEach((d: any) => allTasks = [...allTasks, { ...d.data(), id: d.id }]);
-              setUserTasks(allTasks);
-            });
-            return () => unsubscribe();
-          }
-        })
-        .catch((err: Error) => {
-          console.error(err);
-          setDisableBtn(true);
-          swal('Failed to get data', err.message, 'warning');
-        })
-      */
+      return () => {
+        console.log('Unmount app')
+        firebase.signIn().off();
+      }
     }
 
     initUser();

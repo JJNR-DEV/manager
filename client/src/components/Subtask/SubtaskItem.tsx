@@ -1,4 +1,3 @@
-import React from 'react';
 import swal from 'sweetalert';
 
 import { withFirebase } from '../../firebase/withFirebase';
@@ -11,18 +10,20 @@ interface Props {
   color: string
   firebase: Firebase
   parentId: string
+  parentUserOrigin: string
 };
 
 const SubtaskItem: React.FC<Props> = ({
   subtask,
   color,
   firebase,
-  parentId
+  parentId,
+  parentUserOrigin
 }) => {
   const textDecoration = subtask.done ? 'line-through' :  'none';
 
   const handleCheck = () => {
-    firebase.userTasks.doc(parentId).collection('taskSubtasks').doc(`${ subtask.subtaskId }`).update({
+    firebase.userTasks(parentUserOrigin).doc(parentId).collection('taskSubtasks').doc(subtask.subtaskId).update({
       ...subtask,
       done: !subtask.done
     });
@@ -37,10 +38,10 @@ const SubtaskItem: React.FC<Props> = ({
       dangerMode: true,
     }).then((del) => {
         if(del) {
-          firebase.userTasks.doc(parentId).collection('taskSubtasks').doc(`${ subtask.subtaskId }`).delete();
-          swal('Success!', 'Your subtask has been erased', 'success');
+          firebase.userTasks(parentUserOrigin).doc(parentId).collection('taskSubtasks').doc(`${ subtask.subtaskId }`).delete();
+          swal('Success!', 'Subtask has been erased', 'success');
         } else {
-          swal('Your subtask is safe');
+          swal('The subtask is safe');
         }
       })
       .catch(err => console.error(`Something is not right: ${ err }`))

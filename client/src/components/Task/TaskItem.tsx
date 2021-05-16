@@ -12,6 +12,7 @@ import { Firebase } from '../../firebase';
 interface Props {
   task: Task
   firebase: Firebase
+  user: null | string
 };
 
 const TaskItem: React.FC<Props> = (props) => {
@@ -30,23 +31,34 @@ const TaskItem: React.FC<Props> = (props) => {
       color = '#3AA652';
   };
 
+  console.log('Task Item');
+
   useEffect(() => {
     // Get collection of subtasks
-    const unsubscribe = props.firebase.userTasks.doc(props.task.id).collection('taskSubtasks').onSnapshot((doc: any) => {
-      let allSubtasks: Subtask[] = [];
-      doc.docs.forEach((d: any) => allSubtasks = [...allSubtasks, { ...d.data(), subtaskId: d.id }]);
-      setSubtasks(allSubtasks);
-    });
-    return () => unsubscribe();
-  }, [ props.firebase.userTasks, props.task.id, props.task.taskId ]);
-
+    console.log('Use Effect')
+    if(props.user === null) {
+      const unsubscribe = props.firebase.userTasks.doc(props.task.id).collection('taskSubtasks').onSnapshot((doc: any) => {
+        let allSubtasks: Subtask[] = [];
+        doc.docs.forEach((d: any) => allSubtasks = [...allSubtasks, { ...d.data(), subtaskId: d.id }]);
+        setSubtasks(allSubtasks);
+      });
+      return () => unsubscribe();
+    } else {
+      const unsubscribe = props.firebase.taskManager.doc(props.user).collection('userTasks').doc(props.task.id).collection('taskSubtasks').onSnapshot((doc: any) => {
+        let allSubtasks: Subtask[] = [];
+        doc.docs.forEach((d: any) => allSubtasks = [...allSubtasks, { ...d.data(), subtaskId: d.id }]);
+        setSubtasks(allSubtasks);
+      });
+      return () => unsubscribe();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const updateTask = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
 
-    props.firebase.userTasks.doc(props.task.id).update({
-      concluded: checked
-    }).catch((err: Error) => console.error(`It failed updating the check: ${ err }`));
+    props.firebase.userTasks.doc(props.task.id).update({ concluded: checked })
+      .catch((err: Error) => console.error(`It failed updating the check: ${ err }`));
 
     checked
       ? swal('Yay', `You have done your "${ props.task.name }" task!`, 'success')
@@ -75,7 +87,6 @@ const TaskItem: React.FC<Props> = (props) => {
   };
 
   const shareLink = () => {
-    console.log(props)
     // Edge cases
     if(!navigator.onLine) return swal('Cannot copy', 'You seem to be offline', 'error');
     if(navigator.clipboard === undefined) return swal('Cannot copy', 'To be able to copy please go to the https version of the website', 'error');
@@ -144,8 +155,7 @@ const TaskItem: React.FC<Props> = (props) => {
       <SubtaskList
         taskPrice={ props.task.price }
         subtasks={ subtasks }
-        parentTaskId={ props.task.taskId }
-        parentId={ props.task.id }
+        parentId={ props.task.id! }
         parentName={ props.task.name }
         color={ color } />
 

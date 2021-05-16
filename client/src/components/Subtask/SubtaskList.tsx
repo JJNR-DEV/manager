@@ -7,9 +7,8 @@ import { Subtask } from '../../interfaces';
 interface Props {
   subtasks: Subtask[]
   color: string
-  parentId: string | undefined
+  parentId: string
   parentName: string
-  parentTaskId: number
   taskPrice: number | null
 };
 
@@ -18,7 +17,6 @@ const SubtaskList: React.FC<Props> = ({
   color,
   parentId,
   parentName,
-  parentTaskId,
   taskPrice
 }) => {
   let totalPrice: number = 0;
@@ -48,8 +46,7 @@ const SubtaskList: React.FC<Props> = ({
         pathname: '/new-subtask',
         state: {
           parentId,
-          parentName,
-          parentTaskId
+          parentName
         }
       }}>
         {'\u002B'} Add a subtask

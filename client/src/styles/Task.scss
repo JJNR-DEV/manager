@@ -3,166 +3,169 @@
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-evenly;
+}
 
-  .task {
-    border-radius: $containerRadius;
-    padding: 15px;
-    margin: 10px;
-    box-shadow: 0.5px 0.5px 2px 2px #dfdfdf;
-    max-width: 300px;
-    text-align: left;
-    position: relative;
-    min-width: 275px;
+.task {
+  border-radius: $containerRadius;
+  padding: 15px;
+  margin: 10px;
+  box-shadow: 0.5px 0.5px 2px 2px #dfdfdf;
+  max-width: 300px;
+  text-align: left;
+  position: relative;
+  min-width: 275px;
 
-    .optionsContainer {
-      position: absolute;
-      right: 15px;
-      box-shadow: 0.5px 0.5px 2px 2px #dfdfdf;
-      padding: 5px 10px;
-      top: 35px;
-      background-color: #fff;
-      z-index: 5;
-      font-size: 0.8em;
+  .optionsContainer {
+    position: absolute;
+    right: 15px;
+    box-shadow: 0.1px 0.1px 2px 1.5px #a4a4a4;
+    padding: 5px 10px;
+    top: 35px;
+    background-color: #fff;
+    z-index: 5;
+    font-size: 0.8em;
+    font-weight: 500;
+    border-radius: 2px;
+
+    &:hover {
+      background-color: #a4a4a4;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-left: 10px;
+      }
+    }
+
+  }
+
+  .categoryName {
+    border-bottom: 1px solid $faded !important;
+    padding-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: $commonWeight;
+    max-height: 25px;
+
+    .options {
+      font-weight: 900;
+      max-width: 5px;
+
+      &::after {
+        content: '\2807';
+      }
 
       &:hover {
-        background-color: #dfdfdf;
         cursor: pointer;
       }
-
-      span {
-        display: flex;
-        align-items: flex-start;
-
-        svg {
-          margin-left: 10px;
-        }
-      }
-
     }
+  }
 
-    .categoryName {
-      border-bottom: 1px solid $faded !important;
-      padding-bottom: 5px;
-      display: flex;
-      justify-content: space-between;
-      font-weight: $commonWeight;
-      max-height: 25px;
+  .nameStatus {
+    display: flex;
+    padding: 10px 0;
+    max-width: 220px;
 
-      .options {
-        font-weight: 900;
-        max-width: 5px;
-
-        &::after {
-          content: '\2807';
-        }
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-    }
-
-    .nameStatus {
-      display: flex;
-      padding: 10px 0;
-      max-width: 220px;
-
-      h2 {
-        margin: 0;
-      }
-
-      label {
-        padding: 5px;
-
-        input {
-          display: none;
-        }
-
-        .customCheckbox {
-          width: 22px;
-          height: 22px;
-          border: 1px solid;
-          border-radius: 15px;
-          position: absolute;
-          right: 15px;
-          cursor: pointer;
-          color: #fff;
-        }
-
-        input:checked ~ .customCheckbox::after {
-          content: '\2713';
-          font-size: 1rem;
-          font-weight: 800;
-          display: flex;
-          justify-content: center;
-          padding: 1px 0;
-        }
-      }
-    }
-
-    .taskPrice {
-      display: block;
-      color: $fadedFont;
-      font-size: 0.9em;
-      padding: 0 0 10px 0;
-    }
-
-    h3 {
-      color: $fadedFont;
-      text-transform: capitalize;
-      text-align: center;
+    h2 {
       margin: 0;
-      padding: 0 0 10px 0;
     }
 
-    /* Category */
-    .taskType {
-      border-top: 1px solid $faded;
-      padding: 5px 0 10px;
+    label {
+      padding: 5px;
 
-      .specialInputContainer {
-        padding-top: 5px;
-        font-weight: $commonWeight;
-      }
-    }
-
-    /* Buttons Section */
-    .btnContainer {
-      display: flex;
-      flex-direction: row;
-      padding: 20px 0 0;
-
-      a {
-        width: 100%;
+      input {
+        display: none;
       }
 
-      button {
-        border: 0px;
-        font-size: 1rem;
-        width: 100%;
-        padding: 10px;
-        color: #fff;
-        border-radius: $btnRadius;
-        font-weight: $commonWeight;
+      .customCheckbox {
+        width: 22px;
+        height: 22px;
+        border: 1px solid;
+        border-radius: 15px;
+        position: absolute;
+        right: 15px;
         cursor: pointer;
+        color: #fff;
       }
 
-      .editBtn {
-        margin-right: 10px;
-        background-color: $createEditBtn;
-
-        &:hover {
-          background-color: $createEditBtnHover;
-        }
+      input:checked ~ .customCheckbox::after {
+        content: '\2713';
+        font-size: 1rem;
+        font-weight: 800;
+        display: flex;
+        justify-content: center;
+        padding: 1px 0;
       }
+    }
+  }
 
-      .taskErasure {
-        margin-left: 10px;
-        background-color: $deleteBtn;
+  .taskPrice {
+    display: block;
+    color: $fadedFont;
+    font-size: 0.9em;
+    padding: 0 0 10px 0;
+  }
 
-        &:hover {
-          background-color: $deleteBtnHover;
-        }
+  h3 {
+    color: $fadedFont;
+    text-transform: capitalize;
+    text-align: center;
+    margin: 0;
+    padding: 0 0 10px 0;
+  }
+
+  /* Category */
+  .taskType {
+    border-top: 1px solid $faded;
+    padding: 5px 0 10px;
+
+    .specialInputContainer {
+      padding-top: 5px;
+      font-weight: $commonWeight;
+    }
+  }
+
+  /* Buttons Section */
+  .btnContainer {
+    display: flex;
+    flex-direction: row;
+    padding: 20px 0 0;
+
+    a {
+      width: 100%;
+    }
+
+    button {
+      border: 0px;
+      font-size: 1rem;
+      width: 100%;
+      padding: 10px;
+      color: #fff;
+      border-radius: $btnRadius;
+      font-weight: $commonWeight;
+      cursor: pointer;
+    }
+
+    .editBtn {
+      margin-right: 10px;
+      background-color: $createEditBtn;
+
+      &:hover {
+        background-color: $createEditBtnHover;
+      }
+    }
+
+    .taskErasure {
+      margin-left: 10px;
+      background-color: $deleteBtn;
+
+      &:hover {
+        background-color: $deleteBtnHover;
       }
     }
   }

@@ -63,6 +63,14 @@ $fadedFont: #858585;
   }
 }
 
+/* Task Page */
+.taskPage .mainContainer {
+  display: flex;
+  align-content: center;
+  padding: 20px 0;
+  justify-content: center;
+}
+
 @import './Navigation.scss';
 @import './NewTask.scss';
 @import './Subtask.scss';

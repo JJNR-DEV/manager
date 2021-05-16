@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useLocation, Link,  useHistory } from 'react-router-dom';
+import { useLocation,  useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 
+import Navigation from '../Navigation';
 import { withFirebase } from '../../firebase/withFirebase';
 import TaskItem from './TaskItem';
 
@@ -14,74 +15,73 @@ interface Props {
 }
 
 const TaskPage: React.FC<Props> = ({ firebase }) => {
-  const [ task, setTask ] = useState<Task | null | object>(null);
+  const [ task, setTask ] = useState<Task | null>(null);
 
   const location = useLocation();
   const history = useHistory();
 
   useEffect(() => {
-    console.log('use effect')
     const params = location.search.split('&');
-    let task: string = '';
-    let user: string = '';
+    let taskId: string | null = null;
+    let userId: string | null = null;
+
+    if(params.length !== 2) {
+      swal({
+        title: 'Wrong link',
+        text: 'The link you enter is not on the right format',
+        icon: 'error'
+      }).then(() => history.push('/'));
+      return;
+    }
 
     params.forEach(param => {
       if(param.includes('id')) {
-        task = param.split('=')[1];
+        taskId = param.split('=')[1];
       } else if(param.includes('user')) {
-        user = param.split('=')[1];
+        userId = param.split('=')[1];
       }
     });
 
-    if(task === '' || user === '') {
-      setTask({ })
-      return;
-    } else {
-      firebase.taskManager.doc(user).collection('userTasks').doc(task).get()
-        .then((doc) => {
-          if(doc.exists) {
-            // Unsubscribe to avoid memory leaks
-            const unsubscribe = firebase.taskManager.doc(user).collection('userTasks').doc(task)
-              .onSnapshot((doc: any) => setTask(doc.data()));
-            return () => unsubscribe();
-          } else {
-            swal({
-              title: 'Could not find task',
-              text: 'The task you are looking for might have been removed',
+    if(taskId !== null && userId !== null) {
+      // Unsubscribe to avoid memory leaks
+      const unsubscribe = firebase.outsideTask(userId!, taskId!)
+        .onSnapshot((doc: any) => {
+          doc.exists
+            ? setTask({ ...doc.data(), id: taskId })
+            : swal({
+              title: 'Does not exists',
+              text: 'The task you are looking for does not exist',
               icon: 'error'
-            }).then(() => history.push('/'))
-          }
-        })
-        .catch((err: Error) => swal('Could not fetch data', err.message, 'error'))
-    }
-  }, [ firebase.taskManager, location.search, history ])
+            }).then(() => history.push('/'));
+        });
 
-  if(location.search === '') {
+      return () => unsubscribe();
+    } else {
+      swal({
+        title: 'Wrong link',
+        text: 'The link you enter is not on the right format',
+        icon: 'error'
+      }).then(() => history.push('/'));
+    }
+  }, [ firebase, history, location ]);
+
+  if(task === null) {
     return (
       <div>
-        <h1>You look lost</h1>
-        <Link to='/'>Landing Page</Link>
+        <svg className="spinner" viewBox="0 0 50 50">
+          <circle className="path" cx="25" cy="25" r="20" fill="none" strokeWidth="5"></circle>
+        </svg>
       </div>
     )
   } else {
-    if(task === null) {
-      return (
-        <div>
-          <svg className="spinner" viewBox="0 0 50 50">
-            <circle className="path" cx="25" cy="25" r="20" fill="none" strokeWidth="5"></circle>
-          </svg>
-        </div>
-      )
-    } else if(Object.keys(task).length === 0) {
-      return (
-        <div>
-          <h1>The link provided is not in the right format</h1>
-          <Link to='/'>Landing Page</Link>
-        </div>
-      )
-    }  else {
-      return <TaskItem task={ task } />
-    }
+    return (
+      <div className='taskPage'>
+        <Navigation />
+        <main className='mainContainer'>
+          <TaskItem task={ task } user={ task.userOrigin } />
+        </main>
+      </div>
+    )
   }
 }
 

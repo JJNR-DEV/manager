@@ -35,11 +35,15 @@ class Firebase {
     // If there is already an anonymous user signed in, that user will be returned
     this.signIn = async () => await FirebaseApp.auth().signInAnonymously()
       .then((d) => {
-        this.user = '1111'; // Test user
-        // this.user = d.user!.uid;
+        // this.user = '1112'; // Test user
+        this.user = d.user!.uid;
         this.userTasks = this.taskManager.doc(this.user).collection('userTasks');
       })
       .catch((err) => swal('Could not sign in user', err.message, 'error'));
+  }
+
+  outsideTask(userId: string, taskId: string)  {
+    return this.taskManager.doc(userId).collection('userTasks').doc(taskId!);
   }
 }
 

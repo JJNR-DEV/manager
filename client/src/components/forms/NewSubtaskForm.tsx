@@ -39,11 +39,14 @@ const NewSubtask: React.FC<Props> = (props) => {
   return (
     <form className='forms' onSubmit={ deliver }>
 
-      <Link to='/'>
-        <span className='exit'>
-          { '\u2716' }
-        </span>
-      </Link>
+      {
+        <Link to='/'>
+        </Link>
+      }
+
+      <span className='exit' onClick={ () => history.goBack() }>
+        { '\u2716' }
+      </span>
 
       <h1>Add a Subtask</h1>
       <span style={{ textAlign: 'center' }}>This will be added to the "{ props.parentName }" task</span>

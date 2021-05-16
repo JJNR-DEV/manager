@@ -24,22 +24,48 @@ const App: React.FC<Props> = ({ firebase }) => {
   const [ userTasks, setUserTasks ] = useState<Task[]>([]);
   const [ disableBtn, setDisableBtn ] = useState<boolean>(true);
 
-  console.log('o')
+  console.log('App')
+  console.log(userTasks)
 
   useEffect(() => {
+    console.log('App use effect')
     // Still testing
     // Needs to be updated
     // const server = process.env.NODE_ENV === 'production' ?
     //   'http://localhost:8000' : 'http://localhost:8000';
     // io(server);
-
     const initUser = async () => {
       // Sign in user first
-      await firebase.signIn();
+      firebase.signIn()
+        .then(() => {
+          setDisableBtn(false);
 
+          const unsubscribe = firebase.userTasks.onSnapshot((doc: any) => {
+            console.log(doc)
+            if(doc.empty) {
+              firebase.taskManager.doc(firebase.user).set({});
+            } else {
+              let allTasks: any[] = [];
+              doc.docs.forEach((d: any) => {
+                allTasks = [...allTasks, { ...d.data(), id: d.id }]
+                setUserTasks(allTasks);
+              });
+            }
+          });
+
+          return () => {
+            console.error('Its about to unsubscribe')
+            unsubscribe()
+          };
+        })
+        .catch((err: Error) => {
+          console.error(err);
+          swal('Failed to get data', err.message, 'warning');
+        })
+
+      /*
       firebase.taskManager.doc(firebase.user).get()
         .then((doc: any) => {
-          setDisableBtn(false);
 
           if(doc.exists) {
             // Unsubscribe to avoid memory leaks
@@ -66,10 +92,11 @@ const App: React.FC<Props> = ({ firebase }) => {
           setDisableBtn(true);
           swal('Failed to get data', err.message, 'warning');
         })
+      */
     }
 
     initUser();
-  }, [firebase]);
+  }, [ firebase ]);
 
   return (
     <Router>

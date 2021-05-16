@@ -23,7 +23,6 @@ const EditTask: React.FC<Props> = (props) => {
     specialInput: props.state!.specialInput,
     price: props.state!.price,
     concluded: props.state!.concluded,
-    taskId: props.state!.taskId,
     userOrigin: props.state!.userOrigin
   });
 

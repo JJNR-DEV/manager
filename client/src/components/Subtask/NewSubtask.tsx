@@ -19,16 +19,8 @@ const NewSubtask: React.FC<Props> = (props) => {
       </div>
     )
   } else {
-    const {
-      parentId,
-      parentName,
-      parentTaskId
-    } = props.location.state;
-
-    return <SubtaskForm
-      parentId={ parentId }
-      parentName={ parentName }
-      parentTaskId={ parentTaskId } />
+    const { parentId, parentName } = props.location.state;
+    return <SubtaskForm parentId={ parentId } parentName={ parentName } />
   }
 };
 

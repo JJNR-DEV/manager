@@ -11,8 +11,7 @@ export interface Task {
   } | null
   price: null | number
   concluded: boolean
-  taskId: number
-  userOrigin: number
+  userOrigin: string
 };
 
 export interface Subtask {
@@ -25,5 +24,4 @@ export interface Subtask {
 export interface SubtaskParentElements {
   parentId: string | undefined
   parentName: string
-  parentTaskId: number
 };

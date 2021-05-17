@@ -9,9 +9,6 @@ node_modules
 .env
 env.json
 
-# Firebase Admin
-serviceAccountKey.json
-
 # Lock files
 package-lock.json
 

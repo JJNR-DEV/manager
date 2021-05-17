@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-// import io from 'socket.io-client';
 import swal from 'sweetalert';
 
 import './styles/globals.scss';
@@ -25,11 +24,6 @@ const App: React.FC<Props> = ({ firebase }) => {
   const [ disableBtn, setDisableBtn ] = useState<boolean>(true);
 
   useEffect(() => {
-    // Still testing
-    // Needs to be updated
-    // const server = process.env.NODE_ENV === 'production' ?
-    //   'http://localhost:8000' : 'http://localhost:8000';
-    // io(server);
     const initUser = async () => {
       // Sign in user first
       firebase.signIn()

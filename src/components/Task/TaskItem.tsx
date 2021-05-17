@@ -59,6 +59,9 @@ const TaskItem: React.FC<Props> = (props) => {
     props.firebase.userTasks(props.task.userOrigin).doc(props.task.id).update({ concluded: checked })
       .catch((err: Error) => console.error(`It failed updating the check: ${ err }`));
 
+    // Keep record of who made the latest update
+    props.firebase.latestUpdate(props.task.userOrigin, props.task.id!);
+
     checked
       ? swal('Yay', `Task "${ props.task.name }" has been concluded!`, 'success')
       : swal('Success', `Task "${ props.task.name }" is now in the To Do list`, 'success')
@@ -90,7 +93,7 @@ const TaskItem: React.FC<Props> = (props) => {
     if(!navigator.onLine) return swal('Cannot copy', 'You seem to be offline', 'error');
     if(navigator.clipboard === undefined) return swal('Cannot copy', 'To be able to copy please go to the https version of the website', 'error');
     if (typeof window !== 'undefined') {
-      const path = `${ window.location.protocol }//${ window.location.host }/task?id=${ props.task.id }&user=${ props.firebase.user }`;
+      const path = `${ window.location.protocol }//${ window.location.host }/task?id=${ props.task.id }&user=${ props.task.userOrigin }`;
       navigator.clipboard.writeText(path)
         .then(() => swal('Copied!', 'You copied the link successfully', 'success'))
         .catch(() => swal('Opps', 'Could not copy the link', 'error'))
@@ -120,6 +123,13 @@ const TaskItem: React.FC<Props> = (props) => {
 
       <div className='categoryName' style={{ color }}>
         <span>{ props.task.taskType }</span>
+        {
+          props.task.lastUpdatedBy &&
+          props.task.lastUpdatedBy !== null &&
+          props.task.lastUpdatedBy !== props.task.userOrigin &&
+          props.task.lastUpdatedBy !== props.firebase.user &&
+            <span className='lastUpdate'>Last update by another user</span>
+        }
         <span className='options' onClick={ () => setToggle(!toggle) }></span>
       </div>
 

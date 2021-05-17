@@ -37,6 +37,8 @@ const NewSubtask: React.FC<Props> = ({
     firebase.userTasks(parentUserOrigin).doc(parentId).collection('taskSubtasks').add(subtask)
       .catch((err: Error) => console.error(`Hmm subtask was not created: ${ err }`));
 
+    firebase.latestUpdate(parentUserOrigin, parentId);
+
     swal('Success!', `Subtask "${ subtask.name }" has been added to "${ parentName }"`, 'success')
       .then(() => history.goBack());
   };

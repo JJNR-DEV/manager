@@ -12,15 +12,19 @@ import { Firebase } from '../../firebase';
 
 interface Props {
   firebase: Firebase
+  disableBtn: boolean
 }
 
-const TaskPage: React.FC<Props> = ({ firebase }) => {
+const TaskPage: React.FC<Props> = ({ firebase, disableBtn }) => {
   const [ task, setTask ] = useState<Task | null>(null);
 
   const location = useLocation();
   const history = useHistory();
 
   useEffect(() => {
+    // When disableBtn is false, the user has been signed in
+    if(disableBtn) return;
+
     const params = location.search.split('&');
     let taskId: string | null = null;
     let userId: string | null = null;
@@ -63,7 +67,7 @@ const TaskPage: React.FC<Props> = ({ firebase }) => {
         icon: 'error'
       }).then(() => history.push('/'));
     }
-  }, [ firebase, history, location ]);
+  }, [ firebase, history, location, disableBtn ]);
 
   if(task === null) {
     return (

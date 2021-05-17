@@ -27,6 +27,8 @@ const SubtaskItem: React.FC<Props> = ({
       ...subtask,
       done: !subtask.done
     });
+
+    firebase.latestUpdate(parentUserOrigin, parentId);
   };
 
   const handleDelete = () => {
@@ -39,6 +41,8 @@ const SubtaskItem: React.FC<Props> = ({
     }).then((del) => {
         if(del) {
           firebase.userTasks(parentUserOrigin).doc(parentId).collection('taskSubtasks').doc(`${ subtask.subtaskId }`).delete();
+          firebase.latestUpdate(parentUserOrigin, parentId);
+
           swal('Success!', 'Subtask has been erased', 'success');
         } else {
           swal('The subtask is safe');

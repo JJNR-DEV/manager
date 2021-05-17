@@ -24,7 +24,7 @@ const App: React.FC<Props> = ({ firebase }) => {
   const [ disableBtn, setDisableBtn ] = useState<boolean>(true);
 
   useEffect(() => {
-    const initUser = async () => {
+    const initUser = () => {
       // Sign in user first
       firebase.signIn()
         .then(() => {
@@ -33,6 +33,7 @@ const App: React.FC<Props> = ({ firebase }) => {
           const unsubscribe = firebase.userTasks(null).onSnapshot((doc: any) => {
             if(doc.empty) {
               firebase.taskManager.doc(firebase.user).set({});
+              setUserTasks([]);
             } else {
               let allTasks: any[] = [];
               doc.docs.forEach((d: any) => {
@@ -48,11 +49,6 @@ const App: React.FC<Props> = ({ firebase }) => {
           console.error(err);
           swal('Failed to get data', err.message, 'warning');
         })
-
-      return () => {
-        console.log('Unmount app')
-        firebase.signIn().off();
-      }
     }
 
     initUser();
@@ -72,7 +68,7 @@ const App: React.FC<Props> = ({ firebase }) => {
             <NewTask />
           </Route>
           <Route exact path='/task'>
-            <TaskPage />
+            <TaskPage disableBtn={ disableBtn } />
           </Route>
           <Route exact path='/new-subtask' render={ (props: any) => <NewSubtask {...props} /> } />
           <Route exact path='/edit-task' render={ (props: any) => <EditTask {...props} /> } />

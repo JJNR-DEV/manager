@@ -12,6 +12,8 @@ export interface Task {
   price: null | number
   concluded: boolean
   userOrigin: string
+  lastUpdatedBy?: null | string
+  outsideViewer?: null | string
 };
 
 export interface Subtask {

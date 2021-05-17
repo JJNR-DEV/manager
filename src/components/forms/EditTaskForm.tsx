@@ -32,6 +32,9 @@ const EditTask: React.FC<Props> = (props) => {
     props.firebase.userTasks(toDo.userOrigin).doc(toDo.id).update(toDo)
       .catch((err: Error) => console.error(`Hmm task was not edited: ${ err }`));
 
+    // Keep record of who made the latest update
+    props.firebase.latestUpdate(toDo.userOrigin, toDo.id!);
+
     swal('Success!', `Task "${ task.name }" has been edited`, 'success')
       .then(() => history.goBack());
   };

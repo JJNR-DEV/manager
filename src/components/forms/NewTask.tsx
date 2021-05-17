@@ -21,7 +21,7 @@ const NewTask: React.FC<Props> = (props) => {
     specialInput: {},
     price: null,
     concluded: false,
-    userOrigin: `${ props.firebase.user }`
+    userOrigin: props.firebase.user!
   });
 
   const history = useHistory();

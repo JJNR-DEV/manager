@@ -18,7 +18,7 @@ class Firebase {
       FirebaseApp.initializeApp(firebaseConfig);
       FirebaseApp.firestore()
         .enablePersistence({ synchronizeTabs: true })
-        .catch(err => console.log(err))
+        .catch(err => console.error(err))
     }
 
     // instance variables
@@ -43,8 +43,15 @@ class Firebase {
   }
 
   // External user on Task Page
-  outsideTask(userId: string, taskId: string)  {
+  outsideTask(userId: string, taskId: string) {
     return this.userTasks(userId).doc(taskId!);
+  }
+
+  // Pick up who made the latest update
+  latestUpdate(userId: string, taskId: string) {
+    this.user === userId
+      ? this.userTasks(userId).doc(taskId!).update({ lastUpdatedBy: null })
+      : this.userTasks(userId).doc(taskId!).update({ lastUpdatedBy: this.user });
   }
 }
 

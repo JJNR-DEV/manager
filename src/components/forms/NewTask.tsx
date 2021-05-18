@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import swal from 'sweetalert';
 
@@ -34,9 +34,21 @@ const NewTask: React.FC<Props> = (props) => {
       .then(() => history.push('/'));
   };
 
+  const nameField = useRef(null);
+  const deadlineField = useRef(null);
+  const foodCarbsField = useRef(null);
+  const foodFatField = useRef(null);
+  const foodProteinField = useRef(null);
+
   return (
     <form className='forms' onSubmit={
-      (e: React.FormEvent<HTMLFormElement>) => handleSubmit(e, toDo, deliver) }>
+      (e: React.FormEvent<HTMLFormElement>) => handleSubmit(e, toDo, deliver, {
+        nameField,
+        deadlineField,
+        foodCarbsField,
+        foodFatField,
+        foodProteinField
+      }) }>
 
       <Link to='/'>
         <span className='exit'>
@@ -46,8 +58,13 @@ const NewTask: React.FC<Props> = (props) => {
 
       <h1>Create a new Task</h1>
       <label>
-        Task Name
-        <input type='text' name='toDoName' onChange={ (input) => handleChange(input, setToDo, toDo) } />
+        Name <span className='required'>*</span>
+        <input
+          type='text'
+          name='toDoName'
+          placeholder='Task name (required)'
+          ref={ nameField }
+          onChange={ (input) => handleChange(input, setToDo, toDo) } />
       </label>
 
       <label>
@@ -63,34 +80,37 @@ const NewTask: React.FC<Props> = (props) => {
         toDo.taskType === 'Food' && (
           <fieldset>
             <label>
-              Carbohydrates
+              Carbohydrates <span className='required'>*</span>
               <input
                 type='number'
                 className='foodCarbs'
                 name='foodCarbs'
-                placeholder='Grams'
+                placeholder='In grams (required)'
+                ref={ foodCarbsField }
                 onChange={ (input) => handleChange(input, setToDo, toDo) }
               />
             </label>
 
             <label>
-              Fat
+              Fat <span className='required'>*</span>
               <input
                 type='number'
                 className='foodFat'
                 name='foodFat'
-                placeholder='Grams'
+                placeholder='In grams (required)'
+                ref={ foodFatField }
                 onChange={ (input) => handleChange(input, setToDo, toDo) }
               />
             </label>
 
             <label>
-              Protein
+              Protein <span className='required'>*</span>
               <input
                 type='number'
                 className='foodProtein'
                 name='foodProtein'
-                placeholder='Grams'
+                placeholder='In grams (required)'
+                ref={ foodProteinField }
                 onChange={ (input) => handleChange(input, setToDo, toDo) }
               />
             </label>
@@ -102,12 +122,13 @@ const NewTask: React.FC<Props> = (props) => {
         toDo.taskType === 'Work' && (
           <fieldset>
             <label>
-              Deadline
+              Deadline <span className='required'>*</span>
               <input
                 type='date'
                 className='workDeadline'
                 name='workDeadline'
-                placeholder='yyyy-mm-dd'
+                placeholder='Format yyyy-mm-dd (required)'
+                ref={ deadlineField }
                 onChange={ (input) => handleChange(input, setToDo, toDo) }
               />
             </label>
@@ -136,12 +157,16 @@ const NewTask: React.FC<Props> = (props) => {
       }
 
       <label>
-        Description (optional)
-        <input type='text' name='toDoDesc' onChange={ (input) => handleChange(input, setToDo, toDo) } />
+        Description
+        <input
+          type='text'
+          name='toDoDesc'
+          placeholder='Description of your task'
+          onChange={ (input) => handleChange(input, setToDo, toDo) } />
       </label>
 
       <label>
-        Price (optional)
+        Price
         <input
           type='number'
           name='toDoPrice'

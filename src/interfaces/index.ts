@@ -1,3 +1,5 @@
+import { MutableRefObject } from 'react';
+
 export interface Task {
   id?: string
   name: string
@@ -28,3 +30,11 @@ export interface SubtaskParentElements {
   parentName: string
   parentUserOrigin: string
 };
+
+export interface FormRefFields {
+  nameField: MutableRefObject<null> | { current: HTMLInputElement }
+  deadlineField: MutableRefObject<null> | { current: HTMLInputElement }
+  foodCarbsField: MutableRefObject<null> | { current: HTMLInputElement }
+  foodFatField: MutableRefObject<null> | { current: HTMLInputElement }
+  foodProteinField: MutableRefObject<null> | { current: HTMLInputElement }
+}

@@ -3,30 +3,33 @@ import {
   foodTypeValidation,
   workTypeValidation
 } from './formValidations';
-import { Task } from '../../../interfaces';
 
-export const handleSubmit = async (
+import { Task, FormRefFields } from '../../../interfaces';
+
+export const handleSubmit = (
   e: React.FormEvent<HTMLFormElement>,
   task: Task,
-  cb: Function
+  cb: Function,
+  fields: FormRefFields
 ) => {
   e.preventDefault();
-  if (!emptyFields(task.name.toString())) return;
+  if (!emptyFields(task.name.toString())) {
+    fields.nameField.current!.style.borderColor = 'red';
+    return;
+  }
 
   switch (task.taskType) {
     case 'Food':
-      const validFoodTypes = foodTypeValidation(task.specialInput!);
+      const validFoodTypes = foodTypeValidation(task.specialInput!, fields);
       if (validFoodTypes) {
-        await cb(task);
+        cb(task);
       }
       break;
     case 'Work':
       const validDeadline = workTypeValidation(task.specialInput!);
-      if (validDeadline) {
-        await cb(task);
-      }
+      validDeadline ? cb(task) : fields.deadlineField.current!.style.borderColor = 'red';
       break;
     default:
-      await cb(task);
+      cb(task);
   }
 };

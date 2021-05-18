@@ -3,6 +3,7 @@ export const handleChange = (userInput: any, setToDo: any, toDo: any) => {
 
   switch (inputInfo.name) {
     case 'toDoName':
+      if(inputInfo.style.borderColor !== '') inputInfo.style.borderColor = '';
       setToDo({ ...toDo, name: inputInfo.value });
       break;
     case 'toDoDesc':
@@ -19,24 +20,28 @@ export const handleChange = (userInput: any, setToDo: any, toDo: any) => {
       setToDo({ ...toDo, price: +inputInfo.value });
       break;
     case 'foodCarbs':
+      if(inputInfo.style.borderColor !== '') inputInfo.style.borderColor = '';
       setToDo({
         ...toDo,
         specialInput: { ...toDo.specialInput, foodCarbs: +inputInfo.value },
       });
       break;
     case 'foodFat':
+      if(inputInfo.style.borderColor !== '') inputInfo.style.borderColor = '';
       setToDo({
         ...toDo,
         specialInput: { ...toDo.specialInput, foodFat: +inputInfo.value },
       });
       break;
     case 'foodProtein':
+      if(inputInfo.style.borderColor !== '') inputInfo.style.borderColor = '';
       setToDo({
         ...toDo,
         specialInput: { ...toDo.specialInput, foodProtein: +inputInfo.value },
       });
       break;
     case 'workDeadline':
+      if(inputInfo.style.borderColor !== '') inputInfo.style.borderColor = '';
       setToDo({
         ...toDo,
         specialInput: { ...toDo.specialInput, workDeadline: inputInfo.value },

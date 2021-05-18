@@ -1,5 +1,7 @@
 import swal from 'sweetalert';
 
+import { FormRefFields } from '../../../interfaces';
+
 export const emptyFields = (name: string) => {
   // actually required for RegEx
   // eslint-disable-next-line no-useless-escape
@@ -20,16 +22,20 @@ export const foodTypeValidation = (inputs: {
   foodCarbs?: number,
   foodFat?: number,
   foodProtein?: number
-}) => {
+}, fields: FormRefFields
+) => {
   const allInputs = Object.keys(inputs);
 
   if(!allInputs.includes('foodCarbs')){
+    fields.foodCarbsField.current!.style.borderColor = 'red';
     swal('Could not submit!', 'Please provide in grams the carbohydrates amount', 'error');
     return false;
   } else if(!allInputs.includes('foodFat')){
+    fields.foodFatField.current!.style.borderColor = 'red';
     swal('Could not submit!', 'Please provide in grams the fat amount', 'error');
     return false;
   } else if(!allInputs.includes('foodProtein')){
+    fields.foodProteinField.current!.style.borderColor = 'red';
     swal('Could not submit!', 'Please provide in grams the protein amount', 'error');
     return false;
   } else {

@@ -56,9 +56,7 @@ const EditTask: React.FC<Props> = (props) => {
       }) }>
 
       <Link to='/'>
-        <span className='exit'>
-          {"\u2716"}
-        </span>
+        <span className='exit'>{ '\u2716' }</span>
       </Link>
 
       <h1>Edit Task { `"${ props.state!.name }"` }</h1>
@@ -170,9 +168,7 @@ const EditTask: React.FC<Props> = (props) => {
         />
       </label>
 
-      <button className='btn' type='submit'>
-        Edit Task
-      </button>
+      <button className='btn' type='submit'>Edit Task</button>
     </form>
   );
 };

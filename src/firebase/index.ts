@@ -14,8 +14,10 @@ class Firebase {
   user: string | undefined = undefined;
 
   constructor() {
+    // Only one instance
     if (!FirebaseApp.apps.length) {
       FirebaseApp.initializeApp(firebaseConfig);
+      // Caching for offline use
       FirebaseApp.firestore()
         .enablePersistence({ synchronizeTabs: true })
         .catch(err => console.error(err))
@@ -27,7 +29,7 @@ class Firebase {
 
     // Sign In user
     // If there is already an anonymous user signed in, that user will be returned
-    this.signIn = async () => await FirebaseApp.auth().signInAnonymously()
+    this.signIn = () => FirebaseApp.auth().signInAnonymously()
       .then((d) => {
         // this.user = '1112'; // Test user
         this.user = d.user!.uid;

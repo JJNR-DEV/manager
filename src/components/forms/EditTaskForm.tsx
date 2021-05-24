@@ -4,36 +4,38 @@ import swal from 'sweetalert';
 
 import { handleChange } from './formHandlers/handleChange';
 import { handleSubmit } from './formHandlers/handleSubmit';
-import { withFirebase } from '../../firebase/withFirebase';
+import withFirebase from '../../firebase/withFirebase';
+import tasksCollection from '../../firebase/utils/tasksCollection';
+import latestUpdate from '../../firebase/utils/latestUpdate';
 
 import { Task } from '../../interfaces';
 import { Firebase } from '../../firebase';
 
 interface Props {
   firebase: Firebase
-  state: Task | undefined
+  state: Task
 }
 
-const EditTask: React.FC<Props> = (props) => {
+const EditTask: React.FC<Props> = ({ firebase, state }) => {
   const [ toDo, setToDo ] = useState<Task>({
-    id: props.state!.id,
-    name: props.state!.name,
-    description: props.state!.description,
-    taskType: props.state!.taskType,
-    specialInput: props.state!.specialInput,
-    price: props.state!.price,
-    concluded: props.state!.concluded,
-    userOrigin: props.state!.userOrigin
+    id: state.id,
+    name: state.name,
+    description: state.description,
+    taskType: state.taskType,
+    specialInput: state.specialInput,
+    price: state.price,
+    concluded: state.concluded,
+    userOrigin: state.userOrigin
   });
 
   const history = useHistory();
 
   const deliver = (task: Task) => {
-    props.firebase.userTasks(toDo.userOrigin).doc(toDo.id).update(toDo)
+    tasksCollection(firebase, toDo.userOrigin).doc(toDo.id).update(toDo)
       .catch((err: Error) => console.error(`Hmm task was not edited: ${ err }`));
 
     // Keep record of who made the latest update
-    props.firebase.latestUpdate(toDo.userOrigin, toDo.id!);
+    latestUpdate(firebase, toDo.userOrigin, toDo.id!);
 
     swal('Success!', `Task "${ task.name }" has been edited`, 'success')
       .then(() => history.goBack());
@@ -59,7 +61,7 @@ const EditTask: React.FC<Props> = (props) => {
         <span className='exit'>{ '\u2716' }</span>
       </Link>
 
-      <h1>Edit Task { `"${ props.state!.name }"` }</h1>
+      <h1>Edit Task { `"${ state!.name }"` }</h1>
       <label>
         Name <span className='required'>*</span>
         <input

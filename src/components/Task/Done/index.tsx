@@ -14,7 +14,7 @@ const ToDo: React.FC<Props> = ({ allTasks, disable }) => {
 
   return (
     <>
-      <Navigation/>
+      <Navigation />
       <main className='mainContainer'>
         { tasksDone.length > 0
           ? <TaskList tasks={ tasksDone } />

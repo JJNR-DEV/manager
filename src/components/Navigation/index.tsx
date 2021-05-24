@@ -7,20 +7,14 @@ const Navigation: React.FC<RouteComponentProps> = (props) => {
     <nav className='navigationParent'>
       <div className={ current === '/' ?
         'navigationCurrent' :
-        'navigationElement' }
-        style={{ borderLeft: 'none' }}>
-          <Link to="/">
-            To Do
-          </Link>
+        'navigationElement' }>
+          <Link to="/">To Do</Link>
       </div>
 
       <div className={ current === '/done' ?
         'navigationCurrent' :
-        'navigationElement' }
-        style={{ borderRight: 'none' }}>
-          <Link to="/done">
-            Done
-          </Link>
+        'navigationElement' }>
+          <Link to="/done">Done</Link>
       </div>
     </nav>
   )

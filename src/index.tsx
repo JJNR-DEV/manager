@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 
 import App from './App';
 import { Firebase, FirebaseContext } from './firebase';
+
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 

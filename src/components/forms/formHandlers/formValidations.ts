@@ -7,7 +7,7 @@ export const emptyFields = (name: string) => {
   // eslint-disable-next-line no-useless-escape
   const whiteSpaces = new RegExp('^\s+$');
 
-  if(name ===  '') {
+  if(name === '') {
     swal('Could not submit!', 'Name is required', 'error');
     return false;
   } else if(whiteSpaces.test(name)) {
@@ -44,7 +44,7 @@ export const foodTypeValidation = (inputs: {
 };
 
 export const workTypeValidation = (inputs: {
-  workDeadline?: string | number | Date
+  workDeadline?: string | Date
 }) => {
   if(!Object.keys(inputs).includes('workDeadline')) {
     swal('Could not submit!', 'Please provide a deadline date', 'error');

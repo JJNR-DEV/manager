@@ -1,3 +1,8 @@
+@mixin categoryConcluded($bgColor, $borderColor) {
+  background-color: $bgColor;
+  border-color: $borderColor !important;
+}
+
 .subtasksList {
   border-top: 1px solid $faded;
 
@@ -9,6 +14,9 @@
     padding: 10px 0;
     border-bottom: 1px dotted;
 
+    .concludedElement {
+      text-decoration: line-through;
+    }
 
     .nameState, .priceErase {
       display: flex;
@@ -19,6 +27,18 @@
     .nameState {
       input {
         display: none;
+      }
+
+      .Other {
+        @include categoryConcluded($otherCategory, #fff)
+      }
+
+      .Work {
+        @include categoryConcluded($workCategory, #fff)
+      }
+
+      .Food {
+        @include categoryConcluded($foodCategory, #fff)
       }
 
       .customCheckbox {
@@ -78,3 +98,4 @@
     }
   }
 }
+

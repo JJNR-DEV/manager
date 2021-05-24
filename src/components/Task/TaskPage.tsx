@@ -3,12 +3,12 @@ import { useLocation,  useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 
 import Navigation from '../Navigation';
-import { withFirebase } from '../../firebase/withFirebase';
 import TaskItem from './TaskItem';
+import withFirebase from '../../firebase/withFirebase';
+import tasksCollection from '../../firebase/utils/tasksCollection';
 
 import { Task } from '../../interfaces';
 import { Firebase } from '../../firebase';
-
 
 interface Props {
   firebase: Firebase
@@ -48,15 +48,16 @@ const TaskPage: React.FC<Props> = ({ firebase, disableBtn }) => {
 
     if(taskId !== null && userId !== null) {
       // Unsubscribe to avoid memory leaks
-      const unsubscribe = firebase.outsideTask(userId!, taskId!)
+      const unsubscribe = tasksCollection(firebase, userId)
+        .doc(taskId!)
         .onSnapshot((doc: any) => {
           doc.exists
             ? setTask({ ...doc.data(), id: taskId })
             : swal({
-              title: 'Does not exists',
-              text: 'The task you are looking for does not exist',
-              icon: 'error'
-            }).then(() => history.push('/'));
+                title: 'Does not exists',
+                text: 'The task you are looking for does not exist',
+                icon: 'error'
+              }).then(() => history.push('/'));
         });
 
       return () => unsubscribe();

@@ -9,7 +9,7 @@ export interface Task {
     foodCarbs?: number
     foodFat?: number
     foodProtein?: number
-    workDeadline?: string | number | Date
+    workDeadline?: string | Date
   } | null
   price: null | number
   concluded: boolean

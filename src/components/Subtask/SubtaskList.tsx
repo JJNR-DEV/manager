@@ -6,19 +6,19 @@ import { Subtask } from '../../interfaces';
 
 interface Props {
   subtasks: Subtask[]
-  color: string
   parentId: string
   parentName: string
   taskPrice: number | null
   parentUserOrigin: string
+  parentCategory: string
 };
 
 const SubtaskList: React.FC<Props> = ({
   subtasks,
-  color,
   parentId,
   parentName,
   parentUserOrigin,
+  parentCategory,
   taskPrice
 }) => {
   let totalPrice: number = 0;
@@ -35,8 +35,8 @@ const SubtaskList: React.FC<Props> = ({
             key={ i }
             parentId={ parentId }
             subtask={ subtask }
-            parentUserOrigin={ parentUserOrigin }
-            color={ color } />
+            parentCategory={ parentCategory }
+            parentUserOrigin={ parentUserOrigin } />
         })
       }
 

@@ -1,6 +1,5 @@
 import { createContext } from 'react';
 import FirebaseApp from 'firebase/app';
-
 import 'firebase/firestore';
 
 import { firebaseConfig } from '../firebaseConfig';
